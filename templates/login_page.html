@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center mt8">
+    <div class="login-container p-4 shadow">
+        <h2 class="text-center">{{ title }}</h2>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+            </div>
+            <div class="mb-6 text-center">
+                {{ form.submit(class="btn btn-dark btn-custom") }}
+            </div>
+        </form>
+        
+    </div>
+</div>
+{% endblock %}

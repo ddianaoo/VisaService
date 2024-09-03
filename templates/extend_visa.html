@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-3">{{ title }} </h2>
+
+<div class="d-flex justify-content-center">
+    <form method="POST" action="{{ url_for('extend_visa', pk=pk) }}" class="w-50">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.reason.label(class="form-label") }}
+            {{ form.reason(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.extension_date.label(class="form-label") }}
+            {{ form.extension_date(class="form-control") }}
+        </div>
+        <div class="mb-6 text-center">
+            {{ form.submit(class="btn btn-dark btn-custom") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

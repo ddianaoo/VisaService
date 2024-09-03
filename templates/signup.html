@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center mt8">
+    <div class="login-container p-4 shadow mb-5">
+        <h2 class="text-center">{{ title }}</h2>
+
+        <form method="POST" action="{{ url_for('signup') }}">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.surname.label(class="form-label") }}
+                {{ form.surname(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.patronymic.label(class="form-label") }}
+                {{ form.patronymic(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.re_password.label(class="form-label") }}
+                {{ form.re_password(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.sex.label(class="form-label") }}
+                {{ form.sex(class="form-select") }}
+            </div>
+            <div class="mb-3">
+                {{ form.date_of_birth.label(class="form-label") }}
+                {{ form.date_of_birth(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.place_of_birth.label(class="form-label") }}
+                {{ form.place_of_birth(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.nationality.label(class="form-label") }}
+                {{ form.nationality(class="form-select") }}
+            </div>
+            <div class="mb-6 text-center">
+                {{ form.submit(class="btn btn-dark btn-custom") }}
+            </div>
+        </form>
+        
+    </div>
+</div>
+{% endblock %}

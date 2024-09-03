@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+    <div class="container text-center">
+        <h1 class="display-4">Ласкаво просимо до Візового Сервісу</h1>
+        <p class="lead">Ваш ключ до подорожей з комфортом та впевненістю.</p>     
+        <img src="{{ url_for('static', filename='img/home1.jpg') }}"  class="img-fluid" alt="Visa Photo">   
+    </div>
+
+    <div class="container mt-5">
+        <div class="row section-title mb-3">
+            <div class="col-12 text-center">
+                <h2>Наші сервіси</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <h5 class="card-title">Подати заявку на візу</h5>
+                        <p class="card-text">Розпочніть процес подання заявки на нову візу.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('get_visas') }}" class="btn btn-secondary">Подати заявку</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <h5 class="card-title">Подовжити візу</h5>
+                        <p class="card-text">Відправте заявку на подовження візи.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('get_visas') }}" class="btn btn-secondary">Подовжити</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <h5 class="card-title">Відновити візу</h5>
+                        <p class="card-text">Відправте заявку на відновлення візи через втрату.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('get_visas') }}" class="btn btn-secondary">Відновити</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

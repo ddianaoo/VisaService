@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="modal fade" id="visaModal" tabindex="-1" aria-labelledby="visaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="visaModalLabel">Створення нової візи</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('get_visas') }}" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    <div class="mb-3">
+                        {{ form.type.label(class="form-label") }}
+                        {{ form.type(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.entry_amount.label(class="form-label") }}
+                        {{ form.entry_amount(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.country.label(class="form-label") }}
+                        {{ form.country(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.photo.label(class="form-label") }}
+                        {{ form.photo(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.submit(class="btn btn-dark btn-custom") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <h2 class="mb-0 me-1">{{ title }}</h2>
+            <a class="btn btn-link" href="#" id="openModal" role="button">
+                <i class="bi bi-plus-square black-color fs-4"></i>
+            </a>
+        
+    </div>
+
+    <div class="d-flex flex-column align-items-center">
+        {% for visa in visas %}
+        <div class="col-md-7 mb-4">
+            <div class="card h-100 mb-4">
+                
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Visa Number:</strong> {{ visa.number }}
+                    </div>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                           <i class="bi bi-gear black-color"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('extend_visa', pk=visa.number) }}">Подовжити візу</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('restore_visa', pk=visa.number) }}">Повідомити про втрату</a></li>
+                        </ul>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ visa.photo }}" class="img-fluid photo-size" alt="Visa Photo">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="card-text mb-1"><strong>Passport number:</strong> {{ visa.foreign_passport }}</p>
+                                    <br>
+                                    <p class="card-text mb-1"><strong>Surname:</strong> {{ visa.surname }}</p>
+                                    <p class="card-text mb-1"><strong>Name:</strong> {{ visa.name }}</p>
+                                    <p class="card-text mb-1"><strong>Sex:</strong> {{ visa.sex }}</p>
+                                    <br>
+                                    <p class="card-text mb-1"><strong>Birth Date:</strong> {{ visa.date_of_birth }}</p>
+                                    <p class="card-text mb-1"><strong>Nationality:</strong> {{ visa.nationality }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="card-text mb-1"><strong>Issuing Post Name:</strong> {{ visa.place_of_issue }}</p>
+                                    <br>
+                                    <p class="card-text mb-1"><strong>Visa Type/Class:</strong> {{ visa.type }}</p>
+                                    <p class="card-text mb-1"><strong>Entries:</strong> {{ visa.entry_amount }}</p>
+                                    <p class="card-text mb-1"><strong>Country:</strong> {{ visa.country }}</p>
+                                    <br>
+                                    <p class="card-text mb-1"><strong>Issue Date:</strong> {{ visa.date_of_issue }}</p>
+                                    <p class="card-text mb-1"><strong>Expiration Date:</strong> {{ visa.date_of_expiry }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <p class="text-center">No visas available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var visaModal = new bootstrap.Modal(document.getElementById('visaModal'), {
+        keyboard: false
+    });
+
+    document.getElementById('openModal').addEventListener('click', function() {
+        visaModal.show();
+    });
+</script>
+{% endblock %}
