@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2 class="text-center mb-4">{{ title }}</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">
+                        <span id="title-filter-toggle">Назва <i class="bi bi-caret-down-fill"></i></span>
+                        <div id="title-dropdown" class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-title="">Усі</a>
+                            {% for key, value in TASK_TITLES.items() %}
+                            <a class="dropdown-item" href="#" data-title="{{ key }}">{{ value }}</a>
+                            {% endfor %}
+                        </div>
+                    </th>
+                    <th scope="col">Користувач</th>
+                    <th scope="col" style="width: 180px;">
+                        <span id="status-filter-toggle">Статус <i class="bi bi-caret-down-fill"></i></span>
+                        <div id="status-dropdown" class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-status="">усі</a>
+                            {% for status, label in STATUS_CHOICES.items() %}
+                            <a class="dropdown-item" href="#" data-status="{{ status }}">{{ label }}</a>
+                            {% endfor %}
+                        </div>
+                    </th>
+                    <th scope="col">Створено</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="tasks-body">
+                {% for task in tasks %}
+                <tr data-status="{{ task.status }}" data-title="{{ task.title }}">
+                    <th scope="row">{{ task.id }}</th>
+                    <td>{{ TASK_TITLES[task.title] }}</td>
+                    <td>
+                        <p>{{ task.user.surname }} {{ task.user.name }}</p>
+                        <p>email: {{ task.user.email }}</p>
+                    </td>
+                    <td>
+                        <p class="status{{ task.status }}">{{ STATUS_CHOICES[task.status] }}</p>
+                    </td>
+                    <td>{{ task.created_at.split('T')[0] }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.get_task_by_pk', pk=task.id) }}" class="btn btn-info">
+                            Переглянути
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Заявки недоступні.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const titleFilterToggle = document.getElementById('title-filter-toggle');
+        const titleDropdown = document.getElementById('title-dropdown');
+        const statusFilterToggle = document.getElementById('status-filter-toggle');
+        const statusDropdown = document.getElementById('status-dropdown');
+        
+        const tasksBody = document.getElementById('tasks-body');
+        const allTasks = Array.from(tasksBody.querySelectorAll('tr'));
+
+        let currentTitleFilter = '';
+        let currentStatusFilter = '';
+
+        function toggleDropdown(dropdown) {
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        }
+
+        titleFilterToggle.addEventListener('click', function() {
+            toggleDropdown(titleDropdown);
+        });
+
+        statusFilterToggle.addEventListener('click', function() {
+            toggleDropdown(statusDropdown);
+        });
+
+        function filterTasks() {
+            tasksBody.innerHTML = ''; 
+
+            allTasks.forEach(taskRow => {
+                const taskTitle = taskRow.getAttribute('data-title');
+                const taskStatus = taskRow.getAttribute('data-status');
+
+                const matchesTitle = currentTitleFilter === '' || taskTitle === currentTitleFilter;
+                const matchesStatus = currentStatusFilter === '' || taskStatus === currentStatusFilter;
+
+                if (matchesTitle && matchesStatus) {
+                    tasksBody.appendChild(taskRow);
+                }
+            });
+        }
+
+        titleDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault();
+                currentTitleFilter = this.getAttribute('data-title');
+                filterTasks(); 
+                toggleDropdown(titleDropdown);
+            });
+        });
+
+        statusDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault();
+                currentStatusFilter = this.getAttribute('data-status');
+                filterTasks(); 
+                toggleDropdown(statusDropdown);
+            });
+        });
+    });
+</script>
+
+
+
+{% endblock %}

@@ -61,4 +61,11 @@ class CreateVisaForm(FlaskForm):
     country = SelectField('Країна:', choices=COUNTRY_CHOICES, validators=[DataRequired()])
     entry_amount = SelectField('Кількість в`їздів:', choices=ENTRY_CHOICES, validators=[DataRequired()])
     photo = FileField('Фото:', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Створити')
+
+
+class ComleteTaskForm(FlaskForm):
+    place_of_issue = StringField('Місце видачі:', validators=[DataRequired()])
+    date_of_issue = DateField('Дата видачі:', validators=[DataRequired()])
+    date_of_expiry = DateField('Дійсний до:', validators=[DataRequired()])
+    submit = SubmitField('Відправити')

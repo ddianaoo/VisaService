@@ -1,16 +1,33 @@
-from functools import wraps
-from flask import session, redirect, url_for, flash
+STATUS_CHOICES = {
+    0: 'обробляється',
+    1: 'опрацьовано', 
+    2: 'відхилено',
+}
 
+GENDER_CHOICES = [
+    ('F', 'Жіноча'),
+    ('M', 'Чоловіча'),
+]
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not session.get('auth_token'):
-            flash('Ви ще не увійшли в акаунт.', 'danger')
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
+TASK_TITLES = {
+    ('create a visa', 'Створення візи'),
+    ('extend a visa', 'Подовження візи'),
+    ('restore a visa due to loss', 'Відновлення візи'),
+}
 
+ENTRY_CHOICES = [
+    ('1', 'Одноразовий в\'їзд'),
+    ('2', 'Дворазовий в\'їзд'),
+    ('MULT', 'Багаторазовий в\'їзд')
+]
+
+TYPE_CHOICES = [
+    ('Employment', 'Робоча віза'),
+    ('Business', 'Бізнес віза'),
+    ('Tourist', 'Туристична віза'),
+    ('Student', 'Студентська віза'),
+    ('Transit', 'Транзитна віза'),
+]
 
 COUNTRY_CHOICES = [
     ('AF', 'Афганістан'),

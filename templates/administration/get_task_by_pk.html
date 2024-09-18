@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <h2 class="mb-0 me-1">Заявка №{{ task.id }}: {{ task.title }}</h2>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card mb-4 shadow">
+                <div class="card-header d-flex justify-content-between header-status{{ task.status }}">
+                    <span><strong>Статус:</strong> {{ task.status_display }}</span>
+                    <span><strong>Створено:</strong> {{ task.created_at.split('T')[0] }}</span>
+                </div>
+
+                {% if task.title == 'Створення візи' %}
+                    {% include '_create_visa_task.html' %}
+                {% elif task.title == 'Подовження візи' %}
+                    {% include '_extend_visa_task.html' %}
+                {% elif task.title == 'Відновлення візи' %}
+                    {% include '_restore_visa_task.html' %}
+                {% endif %}
+            </div>
+
+            {% if task.status == 0 %}
+
+                {% if task.title in ('Створення візи', 'Відновлення візи') %}
+                    <button id="showFormBtn" class="btn btn-outline-success">Взяти у роботу</button>
+                {% elif task.title == 'Подовження візи' %}
+                    <a class="btn btn-outline-success" href="{{ url_for('admin.extend_task_staff', pk=task.id) }}">Подовжити</a>
+                {% endif %}
+
+            <a class="btn btn-outline-danger" href="#" id="openModal" role="button" data-bs-toggle="modal" data-bs-target="#confirmRejectModal">
+                Відхилити <i class="bi bi-file-earmark-x" ></i>
+            </a>
+
+            <div id="createVisaForm" style="display: none;">
+                <div class="d-flex justify-content-center align-items-center mt2">
+                    <div class="task-form-container p-4">
+                        <h3 class="text-center">Необхідні дані</h3>
+                        {% if task.title == 'Створення візи' %}
+                        <form method="POST" action="{{ url_for('admin.create_task_staff', pk=task.id) }}">
+                        {% elif task.title == 'Відновлення візи' %}
+                        <form method="POST" action="{{ url_for('admin.restore_task_staff', pk=task.id) }}">
+                        {% endif %}
+                            {{ form.csrf_token }}
+                            <div class="form-group mb-3">
+                                {{ form.place_of_issue.label(class="form-label") }}
+                                {{ form.place_of_issue(class="form-control") }}
+                            </div>
+                            <div class="form-group mb-3">
+                                {{ form.date_of_issue.label(class="form-label") }}
+                                {{ form.date_of_issue(class="form-control") }}
+                            </div>
+                            <div class="form-group mb-3">
+                                {{ form.date_of_expiry.label(class="form-label") }}
+                                {{ form.date_of_expiry(class="form-control") }}
+                            </div>
+                            <div class="mb-6 text-center">
+                                {{ form.submit(class="btn btn-dark btn-custom") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmRejectModal" tabindex="-1" aria-labelledby="confirmRejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmRejectModalLabel">Підтвердження</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Ви дійсно хочете відхилити цю заявку? Цю операцію не можна буде скасувати.
+            </div>
+            <div class="modal-footer">
+                <form id="rejectForm" method="GET" action="{{ url_for('admin.reject_task_staff', pk=task.id) }}">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                    <button type="submit" class="btn btn-danger">Відхилити</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('showFormBtn').addEventListener('click', function () {
+        var form = document.getElementById('createVisaForm');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+            document.getElementById("showFormBtn").textContent = 'Згорнути';
+        } else {
+            form.style.display = 'none';
+            document.getElementById("showFormBtn").textContent = 'Взяти у роботу';
+        }
+    });
+</script>
+{% endblock %}

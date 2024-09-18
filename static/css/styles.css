@@ -26,14 +26,17 @@ footer {
 .mt8 {
     margin-top: 80px;
 }
+.mt2 {
+    margin-top: 20px;
+}
 
 .custom-msgs {
     margin: 60px 20px;
 }
 
 .photo-size {
-    height: 220px; 
-    width: 190px;
+    height: 200px; 
+    width: 160px;
 }
 
 .black-color {
@@ -49,6 +52,67 @@ footer {
     width: 100%;
 }
 
+.task-form-container {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
 .mr2 {
     margin-right: 20px;
+}
+
+.status0 {
+    color: rgb(230, 161, 57);
+}
+.status1 {
+    color: green;
+}
+.status2 {
+    color: red;
+}
+
+.table-responsive {
+    max-height: 550px;
+    overflow-y: auto; 
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #a7b4c0; 
+    z-index: 1; 
+    
+}
+
+.header-status0 {
+    background-color: rgb(244, 184, 45);
+}
+.header-status1 {
+    background-color: rgb(127, 213, 127);
+}
+.header-status2 {
+    background-color: rgb(231, 98, 98);
+}
+
+#status-dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+#status-dropdown.show {
+    display: block;
+}
+#status-dropdown a {
+    display: block;
+    padding: 8px 16px;
+    color: black;
+    text-decoration: none;
+}
+#status-dropdown a:hover {
+    background-color: #f1f1f1;
 }

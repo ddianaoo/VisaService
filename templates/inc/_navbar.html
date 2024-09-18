@@ -4,21 +4,30 @@
     <div class="collapse navbar-collapse">
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {% if session.get('auth_token') and session.get('user', {}).get('is_staff') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('admin.get_tasks') }}">Заявки</a>
+            </li>
+            {% elif session.get('auth_token') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('get_visas') }}">Візи</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('get_requests') }}">Заявки</a>
+            </li>
+            {% endif %}
         </ul>
         <ul class="navbar-nav ml-auto">
             {% if session.get('auth_token') %}
             <li class="nav-item">
-                <a class="btn btn-dark" href="{{ url_for('logout') }}">Вихід</a>
+                <a class="btn btn-dark" href="{{ url_for('auth.logout') }}">Вихід</a>
             </li>
             {% else %}
             <li class="nav-item mr2">
-                <a class="btn btn-dark" href="{{ url_for('signup') }}">Реєстрація</a>
+                <a class="btn btn-dark" href="{{ url_for('auth.signup') }}">Реєстрація</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-dark" href="{{ url_for('login') }}">Вхід</a>
+                <a class="btn btn-dark" href="{{ url_for('auth.login') }}">Вхід</a>
             </li>
             {% endif %}
         </ul>

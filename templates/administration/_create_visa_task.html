@@ -1,0 +1,23 @@
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ task.user_data.new_photo }}" class="img-fluid photo-size" alt="Visa Photo">
+        </div>
+
+        <div class="col-md-8">
+            <p><strong>Номер паспорту:</strong> {{ task.user.foreign_passport }}</p>
+            <p><strong>Ім`я:</strong> {{ task.user.name }}</p>
+            <p><strong>Прізвище:</strong> {{ task.user.patronymic }}</p>
+            <p><strong>Стать:</strong> {{ task.user.sex }}</p>
+            <p><strong>Дата народження:</strong> {{ task.user.date_of_birth }}</p>
+            <p><strong>Національність:</strong> {{ task.user.nationality }}</p>
+        </div>
+
+    </div>
+</div>
+
+<div class="card-footer d-flex flex-column">
+    <span><strong>Тип Візи:</strong> {{ task.user_data.visa_type }}</span>
+    <span><strong>Кількість в`їздів:</strong> {{ task.user_data.visa_entry_amount }}</span>
+    <span><strong>Країна:</strong> {{ task.user_data.visa_country }}</span>
+</div>
